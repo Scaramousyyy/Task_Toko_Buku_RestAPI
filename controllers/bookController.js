@@ -21,7 +21,7 @@ exports.createBook = (req, res) => {
   const { title, author } = req.body;
 
   const newBook = {
-    id: books.length + 1,
+    id: getAvailableId(books),
     title,
     author,
     image: req.file ? req.file.filename : null
@@ -67,3 +67,19 @@ exports.deleteBook = (req, res) => {
     data: deleted[0]
   });
 };
+
+function getAvailableId(books) {
+  if (books.length === 0) return 1;
+
+  const usedIds = books.map(b => b.id).sort((a, b) => a - b);
+
+  let expectedId = 1;
+  for (const id of usedIds) {
+    if (id !== expectedId) {
+      return expectedId;
+    }
+    expectedId++;
+  }
+
+  return expectedId;
+}
