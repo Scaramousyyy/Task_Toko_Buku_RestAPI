@@ -1,6 +1,7 @@
-let books = [
-  { id: 1, title: "Matahari", author: "Tere Liye", image: null }
-];
+const fs = require("fs");
+const path = require("path");
+
+const dbPath = path.join(__dirname, "../data/books.json");
 
 exports.getBooks = (req, res) => {
   res.json(books);
@@ -18,6 +19,8 @@ exports.getBookById = (req, res) => {
 };
 
 exports.createBook = (req, res) => {
+  const books = loadBooks();
+
   const { title, author } = req.body;
 
   const newBook = {
@@ -28,6 +31,7 @@ exports.createBook = (req, res) => {
   };
 
   books.push(newBook);
+  saveBooks(books);
 
   res.status(201).json(newBook);
 };
@@ -82,4 +86,13 @@ function getAvailableId(books) {
   }
 
   return expectedId;
+}
+
+function loadBooks() {
+  const data = fs.readFileSync(dbPath, "utf-8");
+  return JSON.parse(data);
+}
+
+function saveBooks(data) {
+  fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), "utf-8");
 }
