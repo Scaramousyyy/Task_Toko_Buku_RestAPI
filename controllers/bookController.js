@@ -75,12 +75,24 @@ exports.deleteBook = (req, res) => {
     return res.status(404).json({ message: "Book not found" });
   }
 
-  const deleted = books.splice(index, 1);
+  const deleted = books.splice(index, 1)[0];
+
+  // Hapus file gambar jika ada
+  if (deleted.image) {
+    const imagePath = path.join(__dirname, "../images", deleted.image);
+
+    // Cek dulu apakah file ada
+    if (fs.existsSync(imagePath)) {
+      fs.unlinkSync(imagePath);
+      console.log("Deleted file:", deleted.image);
+    }
+  }
+
   saveBooks(books);
 
   res.json({
     message: "Book deleted successfully",
-    data: deleted[0]
+    data: deleted
   });
 };
 
