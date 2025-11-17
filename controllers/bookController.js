@@ -3,11 +3,15 @@ const path = require("path");
 
 const dbPath = path.join(__dirname, "../data/books.json");
 
+// GET all books
 exports.getBooks = (req, res) => {
+  const books = loadBooks();
   res.json(books);
 };
 
+// GET book by ID
 exports.getBookById = (req, res) => {
+  const books = loadBooks();
   const id = parseInt(req.params.id);
   const book = books.find(b => b.id === id);
 
@@ -18,6 +22,7 @@ exports.getBookById = (req, res) => {
   res.json(book);
 };
 
+// CREATE book
 exports.createBook = (req, res) => {
   const books = loadBooks();
 
@@ -36,7 +41,9 @@ exports.createBook = (req, res) => {
   res.status(201).json(newBook);
 };
 
+// UPDATE book
 exports.updateBook = (req, res) => {
+  const books = loadBooks();
   const id = parseInt(req.params.id);
   const { title, author } = req.body;
 
@@ -47,17 +54,21 @@ exports.updateBook = (req, res) => {
   }
 
   books[bookIndex] = {
-    id,
+    ...books[bookIndex],
     title: title || books[bookIndex].title,
     author: author || books[bookIndex].author,
     image: req.file ? req.file.filename : books[bookIndex].image
   };
 
+  saveBooks(books);
   res.json(books[bookIndex]);
 };
 
+// DELETE book
 exports.deleteBook = (req, res) => {
+  const books = loadBooks();
   const id = parseInt(req.params.id);
+
   const index = books.findIndex(b => b.id === id);
 
   if (index === -1) {
@@ -65,6 +76,7 @@ exports.deleteBook = (req, res) => {
   }
 
   const deleted = books.splice(index, 1);
+  saveBooks(books);
 
   res.json({
     message: "Book deleted successfully",
@@ -72,6 +84,7 @@ exports.deleteBook = (req, res) => {
   });
 };
 
+// Generate next available ID
 function getAvailableId(books) {
   if (books.length === 0) return 1;
 
