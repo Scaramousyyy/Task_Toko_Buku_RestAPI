@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "id": 1,
+    "title": "Bumi",
+    "author": "Tere Liye",
+    "image": "1763385295324-Gramedia Samarinda - Bumi.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Perempuan di Titik Nol",
+    "author": "Nawal El Saadawi",
+    "image": "1763386437346-Perempuan di Titik Nol.jpg"
+  },
+  {
+    "id": 4,
+    "title": "Seporsi Mie Ayam Sebelum Mati",
+    "author": "Brian Krisna",
+    "image": "1763385399624-seporsi mie ayam sebelum mati.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Teka-Teki Rumah Aneh",
+    "author": "Uketsu",
+    "image": "1763386453398-Perempuan di Titik Nol.jpg"
+  }
+]
